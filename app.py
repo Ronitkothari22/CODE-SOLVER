@@ -63,3 +63,19 @@ def process_uploaded_files(files):
     response = generate_gemini_response(input_prompt, file_path) if file_path else None
     return file_path, response
 
+with gr.Blocks() as demo:
+    file_output = gr.Textbox()
+    image_output = gr.Image()
+    combined_output = [image_output, file_output]
+
+    # Upload button for user to provide images
+    upload_button = gr.UploadButton(
+        "Click to Upload an Image",
+        file_types=["image"],
+        file_count="multiple",
+    )
+     # Set up the upload button to trigger the processing function
+    upload_button.upload(process_uploaded_files, upload_button, combined_output)
+
+# Launch the Gradio interface with debug mode enabled
+demo.launch(debug=True)
